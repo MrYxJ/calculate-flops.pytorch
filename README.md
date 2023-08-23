@@ -4,9 +4,13 @@
 
 This tool(calflops) is designed to compute the theoretical amount of FLOPs(floating-point operations)、MACs(multiply-add operations) and Parameters in all various neural networks, such as Linear、 CNN、 RNN、 GCN、**Transformer(Bert、LlaMA etc Large Language Model)**，including **any custom models** via ```torch.nn.function.*``` as long as based on the Pytorch implementation.
 
+This is probably the easiest tool to calculate llm flops, you just need ```transformers_tokenizer``` to pass in its corresponding tokenizer, and it will automatically help you build the input_shape model input. Alternatively, you can pass in the input to multiple models that you have already generated, such as input_ids, attention_mask, and so on, with the ```args```、 ```kwargs``` parameter. See the api 
+of ```calflops.calculate_flops()``` for details.
+
 In addition, the implementation process of this package inspired by [ptflops](https://github.com/sovrasov/flops-counter.pytorch) and [deepspeed](https://github.com/microsoft/DeepSpeed/tree/master/deepspeed) libraries, Thanks for their great efforts, they are both very good work. Meanwhile this package also improves some aspects(more simple use、more model support) based on them.
 
-This Doc is still being developed.....
+
+This Doc is still being developed, it is pleasure for starting.
 
 ## Install the latest version
 From PyPI:
@@ -85,6 +89,7 @@ if calflops was useful for your paper or tech report, please cite me:
 ## Common model calculate flops
 
 ### large language model
+This tool(calflops) maybe is the most simple 
 
 Input data format: batch_size=1, seq_len=128
 
@@ -94,18 +99,18 @@ bwd + fwd FLOPs: The FLOPs of model forward and backward propagation
 
 Model         | Input Shape | Params(B)|Params(Total)| fwd FLOPs(G) | fwd MACs(G) | fwd + bwd FLOPs(G) | fwd + bwd MACs(G)  | 
 ---           |---          |---       |---          |---         |---       |---        |--- 
-bloom-1b7     |(1, 128)     | 1.72B    | 1722408960  | 310.92     | 155.42   | 932.76    | 466.27
-bloom-7b1     |(1, 128)     | 7.07B    | 7069016064  | 1550.39    | 775.11   | 4651.18   | 2325.32
-baichuan-7B   |(1, 128)     | 7B       | 7000559616  | 1733.62    | 866.78   | 5200.85   | 2600.33
-chatglm-6b    |(1, 128)     | 6.17B    | 6173286400  | 1587.66    | 793.75   | 4762.97   | 2381.24
-chatglm2-6b   |(1, 128)     | 6.24B    | 6243584000  | 1537.68    | 768.8    | 4613.03   | 2306.4 
-Qwen-7B       |(1, 128)     | 7.72B    | 7721324544  | 1825.83    | 912.88   | 5477.48   | 2738.65
-llama-7b      |(1, 128)     | 6.74B    | 6738415616  | 1700.06    | 850      | 5100.19   | 2550
-llama2-7b     |(1, 128)     | 6.74B    | 6738415616  | 1700.06    | 850      | 5100.19   | 2550   
-llama2-7b-chat |(1, 128)     | 6.74B    | 6738415616  | 1700.06   | 850     | 5100.19   | 2550
-chinese-llama-7b | (1, 128)  | 6.89B    | 6885486592  | 1718.89    | 859.41   |5156.67   | 2578.24
-chinese-llama-plus-7b| (1, 128) | 6.89B | 6885486592  | 1718.89    | 859.41   |5156.67   | 2578.24
-moss-moon-003-sft |(1, 128) | 16.72B  | 16717980160 |  4124.93    | 2062.39  |  12374.8  | 6187.17
+bloom-1b7     |(1,128)     | 1.72B    | 1722408960  | 310.92     | 155.42   | 932.76    | 466.27
+bloom-7b1     |(1,128)     | 7.07B    | 7069016064  | 1550.39    | 775.11   | 4651.18   | 2325.32
+baichuan-7B   |(1,128)     | 7B       | 7000559616  | 1733.62    | 866.78   | 5200.85   | 2600.33
+chatglm-6b    |(1,128)     | 6.17B    | 6173286400  | 1587.66    | 793.75   | 4762.97   | 2381.24
+chatglm2-6b   |(1,128)     | 6.24B    | 6243584000  | 1537.68    | 768.8    | 4613.03   | 2306.4 
+Qwen-7B       |(1,128)     | 7.72B    | 7721324544  | 1825.83    | 912.88   | 5477.48   | 2738.65
+llama-7b      |(1,128)     | 6.74B    | 6738415616  | 1700.06    | 850      | 5100.19   | 2550
+llama2-7b     |(1,128)     | 6.74B    | 6738415616  | 1700.06    | 850      | 5100.19   | 2550   
+llama2-7b-chat |(1,128)     | 6.74B    | 6738415616  | 1700.06   | 850     | 5100.19   | 2550
+chinese-llama-7b | (1,128)  | 6.89B    | 6885486592  | 1718.89    | 859.41   |5156.67   | 2578.24
+chinese-llama-plus-7b| (1,128) | 6.89B | 6885486592  | 1718.89    | 859.41   |5156.67   | 2578.24
+moss-moon-003-sft |(1,128) | 16.72B  | 16717980160 |  4124.93    | 2062.39  |  12374.8  | 6187.17
 
 We can draw some simple and interesting conclusions from the table above:
 - The chatglm2-6b in the model of the same scale, the model parameters are smaller, and FLOPs is also smaller, which has certain advantages in speed performance.

@@ -1,18 +1,38 @@
-# calflops: a FLOPs and Params calculate tool for neural networks in pytorch framework
-[![Pypi version](https://img.shields.io/pypi/v/calflops.svg)](https://pypi.org/project/calflops/)
+<!-- markdownlint-disable first-line-h1 -->
+<!-- markdownlint-disable html -->
 
+<div align="center">
+<h1>
+  calflops: a FLOPs and Params calculate tool for neural networks
+</h1>
+</div>
+
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/calflops)
+[![Pypi version](https://img.shields.io/pypi/v/calflops.svg)](https://pypi.org/project/calflops/)
+[![PyPI - License](https://img.shields.io/pypi/l/calflops)](https://github.com/MrYxJ/calculate-flops.pytorch/blob/main/LICENSE)
+
+<h4 align="center">
+    <p>
+        <b>English</b> |
+        <a href="https://github.com/MrYxJ/calculate-flops.pytorch/blob/main/README_CN.md">中文</a>
+    <p>
+</h4>
+
+
+
+# Introduction
 This tool(calflops) is designed to compute the theoretical amount of FLOPs(floating-point operations)、MACs(multiply-add operations) and Parameters in all various neural networks, such as Linear、 CNN、 RNN、 GCN、**Transformer(Bert、LlaMA etc Large Language Model)**，including **any custom models** via ```torch.nn.function.*``` as long as based on the Pytorch implementation.
 
-This is probably the easiest tool to calculate LLM(large language model) FLOPs, you just need ```transformers_tokenizer``` to pass in its corresponding tokenizer, and it will automatically help you build the input_shape model input. Alternatively, you can pass in the input to multiple models that you have already generated, such as input_ids, attention_mask, and so on, with the ```args```、 ```kwargs``` parameter. See the api 
+This is probably the easiest tool to calculate LLM(large language model) FLOPs, you just need assign llm corresponding tokenizer to the parameter: ```transformers_tokenizer``` to pass in funcional of ```calflops.calculate_flops()```, and it will automatically help you build the input_shape model input. Alternatively, you can pass in the input to multiple models that you have already generated, such as input_ids, attention_mask, and so on, with the ```args```、 ```kwargs``` parameter. See the api 
 of ```calflops.calculate_flops()``` for details.
 
 In addition, the implementation process of this package inspired by [ptflops](https://github.com/sovrasov/flops-counter.pytorch) and [deepspeed](https://github.com/microsoft/DeepSpeed/tree/master/deepspeed) libraries, Thanks for their great efforts, they are both very good work. Meanwhile this package also improves some aspects(more simple use、more model support) based on them.
 
 
-This Doc is still being developed, it is pleasure for starting.
+This Doc is still being developed, it is pleasure for staring.
 
 ## Install the latest version
-From PyPI:
+#### From PyPI:
 
 ```
 pip install calflops

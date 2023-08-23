@@ -5,15 +5,15 @@
  Description  : 
  Version      : 1.0
  Author       : MrYXJ
- Mail         : code_job@163.com
+ Mail         : code.mryxj@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-19 22:34:47
- LastEditTime : 2023-08-20 23:53:10
+ LastEditTime : 2023-08-22 09:57:33
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
 '''
-This code is inspired by deepspeed profiling/flops_profiler/profiler.py
+The part of code in this file is inspired by ptflops and deepspeed profiling.
 '''
 
 import numpy as np
@@ -577,7 +577,5 @@ def _reload_tensor_methods(old_functions):
     torch.Tensor.mul = old_functions[torch.Tensor.mul.__str__]
     torch.add = old_functions[torch.add.__str__]
     torch.Tensor.add = old_functions[torch.Tensor.add.__str__]
-
     torch.einsum = old_functions[torch.einsum.__str__]
-
     torch.baddbmm = old_functions[torch.baddbmm.__str__]

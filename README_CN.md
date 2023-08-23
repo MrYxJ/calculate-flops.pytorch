@@ -1,12 +1,8 @@
-# calflops: a FLOPs and Params calculate tool for neural networks in pytorch framework
-[![Pypi version](https://img.shields.io/pypi/v/calflops.svg)](https://pypi.org/project/calflops/)
-
-
+# calculate-flops.pytorch
 This tool(calflops) is designed to compute the theoretical amount of FLOPs(floating-point operations)、MACs(multiply-add operations) and Parameters in all various neural networks, such as Linear、 CNN、 RNN、 GCN、**Transformer(Bert、LlaMA etc Large Language Model)**，including **any custom models** via ```torch.nn.function.*``` as long as based on the Pytorch implementation.
 
-In addition, the implementation process of this package inspired by [ptflops](https://github.com/sovrasov/flops-counter.pytorch) and [deepspeed](https://github.com/microsoft/DeepSpeed/tree/master/deepspeed) libraries, Thanks for their great efforts, they are both very good work. Meanwhile this package also improves some aspects(more simple use、more model support) based on them.
+In addition, the implementation process of this package inspired by [ptflops](https://github.com/sovrasov/flops-counter.pytorch) and [deepspeed](https://github.com/microsoft/DeepSpeed/tree/master/deepspeed) libraries, for which I am very grateful for their great efforts, they are both very good work. Meanwhile this package also improves some aspects(more simple use、more model support) based on them.
 
-This Doc is still being developed.....
 
 ## Install the latest version
 From PyPI:
@@ -94,27 +90,19 @@ bwd + fwd FLOPs: The FLOPs of model forward and backward propagation
 
 Model         | Input Shape | Params(B)|Params(Total)| fwd FLOPs(G) | fwd MACs(G) | fwd + bwd FLOPs(G) | fwd + bwd MACs(G)  | 
 ---           |---          |---       |---          |---         |---       |---        |--- 
-bloom-1b7     |(1, 128)     | 1.72B    | 1722408960  | 310.92     | 155.42   | 932.76    | 466.27
-bloom-7b1     |(1, 128)     | 7.07B    | 7069016064  | 1550.39    | 775.11   | 4651.18   | 2325.32
 baichuan-7B   |(1, 128)     | 7B       | 7000559616  | 1733.62    | 866.78   | 5200.85   | 2600.33
 chatglm-6b    |(1, 128)     | 6.17B    | 6173286400  | 1587.66    | 793.75   | 4762.97   | 2381.24
 chatglm2-6b   |(1, 128)     | 6.24B    | 6243584000  | 1537.68    | 768.8    | 4613.03   | 2306.4 
+falcon-7b     |(1, 128)  | | | | |
+falcon-7b-instruct |(1,128) | | | |
 Qwen-7B       |(1, 128)     | 7.72B    | 7721324544  | 1825.83    | 912.88   | 5477.48   | 2738.65
+Qwen-7B-Chat  |(1, 128)     |          |             |            |          |           | 
 llama-7b      |(1, 128)     | 6.74B    | 6738415616  | 1700.06    | 850      | 5100.19   | 2550
 llama2-7b     |(1, 128)     | 6.74B    | 6738415616  | 1700.06    | 850      | 5100.19   | 2550   
-llama2-7b-chat |(1, 128)     | 6.74B    | 6738415616  | 1700.06   | 850     | 5100.19   | 2550
-chinese-llama-7b | (1, 128)  | 6.89B    | 6885486592  | 1718.89    | 859.41   |5156.67   | 2578.24
-chinese-llama-plus-7b| (1, 128) | 6.89B | 6885486592  | 1718.89    | 859.41   |5156.67   | 2578.24
-moss-moon-003-sft |(1, 128) | 16.72B  | 16717980160 |  4124.93    | 2062.39  |  12374.8  | 6187.17
+llama2-7b-chat |(1, 128)     | 6.74B    | 6738415616  | 1700.06    | 850      | 5100.19   | 2550   
+moss-moon-003-base |(1, 128) |   |             |            |          |           | 
+moss-moon-003-sft |(1, 128) | 16.72B  | 16717980160 |  4124.93 |    2062.39  |  12374.8 | 6187.17
 
-We can draw some simple and interesting conclusions from the table above:
-- The chatglm2-6b in the model of the same scale, the model parameters are smaller, and FLOPs is also smaller, which has certain advantages in speed performance.
-- The parameters of the llama1-7b, llama2-7b, and llama2-7b-chat models did not change at all, and FLOPs remained consistent. The structure of the model that conforms to the 7b described by [meta in its llama2 report](https://ai.meta.com/research/publications/llama-2-open-foundation-and-fine-tuned-chat-models/) has not changed, the main difference is the increase of training data tokens.
-- Similarly, it can be seen from the table that the chinese-llama-7b and chinese-llama-plus-7b data are also in line with [cui's report](https://arxiv.org/pdf/2304.08177v1.pdf), just more chinese data tokens are added for training, and the model structure and parameters do not change.
-
-- ......
-
-More model FLOPs would be updated successively, see github [calculate-flops.pytorch](https://github.com/MrYxJ/calculate-flops.pytorch)
 
 ### transformers
 
@@ -125,8 +113,8 @@ Model         | Input Shape | Params(M)|Params(Total)| fwd FLOPs(G) | fwd MACs(G
 hfl/chinese-roberta-wwm-ext | (1,128)| 102.27M | 102267648 |       67.1  |    33.52  |  201.3 | 100.57
 ......
 
-You can use calflops to calculate the more different model based bert, look forward to updating in this form.
- 
+
+
 
 <!-- ### [torchvision](https://pytorch.org/docs/1.0.0/torchvision/models.html)
 

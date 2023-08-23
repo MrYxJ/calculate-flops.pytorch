@@ -1,10 +1,9 @@
 # calflops: a FLOPs and Params calculate tool for neural networks in pytorch framework
 [![Pypi version](https://img.shields.io/pypi/v/calflops.svg)](https://pypi.org/project/calflops/)
 
-
 This tool(calflops) is designed to compute the theoretical amount of FLOPs(floating-point operations)、MACs(multiply-add operations) and Parameters in all various neural networks, such as Linear、 CNN、 RNN、 GCN、**Transformer(Bert、LlaMA etc Large Language Model)**，including **any custom models** via ```torch.nn.function.*``` as long as based on the Pytorch implementation.
 
-This is probably the easiest tool to calculate llm flops, you just need ```transformers_tokenizer``` to pass in its corresponding tokenizer, and it will automatically help you build the input_shape model input. Alternatively, you can pass in the input to multiple models that you have already generated, such as input_ids, attention_mask, and so on, with the ```args```、 ```kwargs``` parameter. See the api 
+This is probably the easiest tool to calculate LLM(large language model) FLOPs, you just need ```transformers_tokenizer``` to pass in its corresponding tokenizer, and it will automatically help you build the input_shape model input. Alternatively, you can pass in the input to multiple models that you have already generated, such as input_ids, attention_mask, and so on, with the ```args```、 ```kwargs``` parameter. See the api 
 of ```calflops.calculate_flops()``` for details.
 
 In addition, the implementation process of this package inspired by [ptflops](https://github.com/sovrasov/flops-counter.pytorch) and [deepspeed](https://github.com/microsoft/DeepSpeed/tree/master/deepspeed) libraries, Thanks for their great efforts, they are both very good work. Meanwhile this package also improves some aspects(more simple use、more model support) based on them.
@@ -88,14 +87,12 @@ if calflops was useful for your paper or tech report, please cite me:
 
 ## Common model calculate flops
 
-### large language model
-This tool(calflops) maybe is the most simple 
-
+### Large Language Model
 Input data format: batch_size=1, seq_len=128
 
-fwd FLOPs: The FLOPs of the model forward propagation
+- fwd FLOPs: The FLOPs of the model forward propagation
 
-bwd + fwd FLOPs: The FLOPs of model forward and backward propagation
+- bwd + fwd FLOPs: The FLOPs of model forward and backward propagation
 
 Model         | Input Shape | Params(B)|Params(Total)| fwd FLOPs(G) | fwd MACs(G) | fwd + bwd FLOPs(G) | fwd + bwd MACs(G)  | 
 ---           |---          |---       |---          |---         |---       |---        |--- 
@@ -121,7 +118,7 @@ We can draw some simple and interesting conclusions from the table above:
 
 More model FLOPs would be updated successively, see github [calculate-flops.pytorch](https://github.com/MrYxJ/calculate-flops.pytorch)
 
-### transformers
+### Bert
 
 Input data format: batch_size=1, seq_len=128
 
@@ -131,7 +128,36 @@ hfl/chinese-roberta-wwm-ext | (1,128)| 102.27M | 102267648 |       67.1  |    33
 ......
 
 You can use calflops to calculate the more different model based bert, look forward to updating in this form.
+
+
+## Benchmark
+### [torchvision](https://pytorch.org/docs/1.0.0/torchvision/models.html)
+
+Model         | Input Resolution | Params(M)|Params(Total) | FLOPs(G) | FLOPs(Total) | Macs(G) | Macs(Total) 
+---           |---               |---        |---          |---     |---          |---     |---
+alexnet       |224x224           | 61.10     | 61100840    | 1.43   | 1429740000  | 741.19 | 7418800000
+vgg11         |224x224           | 132.86    | 132863000   | 15.24  | 15239200000 | 7.61   | 7609090000
+vgg13         |224x224           | 133.05    | 133048000   | 22.65  | 22647600000 | 11.31  | 11308500000
+vgg16         |224x224           | 138.36    | 138358000   | 30.97  | 30973800000 | 15.47  | 15470300000
+vgg19         |224x224           | 143.67    | 143667000   | 39.30  | 39300000000 | 19.63  | 19632100000
+vgg11_bn      |224x224           | 132.87    | 132869000   | 15.25  | 15254000000 | 7.61   | 7609090000
+vgg13_bn      |224x224           | 133.05    | 133054000   | 22.67  | 22672100000 | 11.31  | 11308500000
+vgg16_bn      |224x224           | 138.37    | 138366000   | 31.00  | 31000900000 | 15.47  | 15470300000
+vgg19_bn      |224x224           | 143.68    | 143678000   | 39.33  | 39329700000 | 19.63  | 19632100000
+resnet18      |224x224           | 11.69     | 11689500    | 3.64   | 3636250000  | 1.81   | 1814070000
+resnet34      |224x224           | 21.80     | 21797700    | 7.34   | 7339390000  | 3.66   | 3663760000
+resnet50      |224x224           | 25.56     | 25557000    | 8.21   | 8211110000  | 4.09   | 4089180000
+resnet101     |224x224           | 44.55     | 44549200    | 15.65  | 15690900000 | 7.80   | 7801410000
+resnet152     |224x224           | 60.19     | 60192800    | 23.09  | 23094300000 | 11.51  | 11513600000
+squeezenet1_0 |224x224           | 1.25      | 1248420     | 1.65   | 1648970000  | 0.82   | 818925000
+squeezenet1_1 |224x224           | 1.24      | 1235500     | 0.71   | 705014000   | 0.35   | 349152000
+densenet121   |224x224           | 7.98      | 7978860     | 5.72   | 5716880000  | 2.83   | 2834160000
+densenet169   |224x224           | 14.15     | 14195000    | 6.78   | 6778370000  | 3.36   | 3359840000
+densenet201   |224x224           | 20.01     | 20013900    | 8.66   | 8658520000  | 4.29   | 4291370000
+densenet161   |224x224           | 28.68     | 28681000    | 15.55  | 1554650000  | 7.73   | 7727900000
+inception_v3  |224x224           | 27.16     | 27161300    | 5.29   | 5692390000  | 2.84   | 2837920000
  
+You also can compare torchvision results of calculate FLOPs with anthoer good tool: [ptflops readme.md](https://github.com/sovrasov/flops-counter.pytorch/).
 
 <!-- ### [torchvision](https://pytorch.org/docs/1.0.0/torchvision/models.html)
 
@@ -210,4 +236,4 @@ def calculate_flops(model,
 
 Author: [MrYXJ](https://github.com/MrYxJ/)
 
-Mail: code.mryxj@gmail.com
+Mail: yxj2017@gmail.com

@@ -155,11 +155,11 @@ print("Llama2(7B) FLOPs:%s   MACs:%s   Params:%s \n" %(flops, macs, params))
 
 The calflops provides a more detailed display of model FLOPs calculation information. By setting the parameter ```print_result=True```, which defaults to True, flops of the model will be printed in the terminal or jupyter interface.
 
-![print_results](https://github.com/MrYxJ/calculate-flops.pytorch/blob/main/screenshot/alexnet_print_result.png?raw=true)
+![print_results](https://github.com/MrYxJ/calculate-flops.pytorch/blob/main/screenshot/alxnet_print_result.png?raw=true)
 
 Meanwhile,by setting the parameter ```print_detailed=True``` which default to True, the calflops supports the display of the calculation results and proportion of FLOPs、NACs and Parameter in each submodule of the entire model, so that it is convenient to see the largest part of the calculation consumption in the entire model.
 
-![print_detailed](https://github.com/MrYxJ/calculate-flops.pytorch/blob/main/screenshot/alexnet_print_detailed.png?raw=true)
+![print_detailed](https://github.com/MrYxJ/calculate-flops.pytorch/blob/main/screenshot/alxnet_print_detailed.png?raw=true)
 
 ### More use introduction
 

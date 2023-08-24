@@ -276,6 +276,8 @@ Input data format: batch_size=1, seq_len=128
 
 - bwd + fwd FLOPs: The FLOPs of model forward and backward propagation
 
+In addition, note that fwd + bwd does not include calculation losses for model parameter  activation recomputation, if the results wants to include activation recomputation that is only necessary to multiply the result of fwd FLOPs by 4. According to the paper: https://arxiv.org/pdf/2205.05198.pdf
+
 Model         | Input Shape | Params(B)|Params(Total)| fwd FLOPs(G) | fwd MACs(G) | fwd + bwd FLOPs(G) | fwd + bwd MACs(G)  | 
 ---           |---          |---       |---          |---         |---       |---        |--- 
 bloom-1b7     |(1,128)      | 1.72B    | 1722408960  | 310.92     | 155.42   | 932.76    | 466.27

@@ -65,7 +65,7 @@ If the model has multiple inputs, use the parameters ```args``` or ```kargs```, 
 
 ### Transformer Model 
 
-use parameter ```input_shape``` and ```transformer_tokenizer```
+Compared to the CNN Model, Transformer Model if you want to use the parameter ```input_shape``` to make calflops automatically generating the input data, you should pass its corresponding tokenizer through the parameter ```transformer_tokenizer```.
 
 ``` python
 # Transformers Model, such as bert.
@@ -87,7 +87,9 @@ print("Bert(hfl/chinese-roberta-wwm-ext) FLOPs:%s   MACs:%s   Params:%s \n" %(fl
 #Bert(hfl/chinese-roberta-wwm-ext) FLOPs:67.1 GFLOPS   MACs:33.52 GMACs   Params:102.27 M 
 ```
 
-use parameter ```args``` or ```kwargs```:
+If you want to use your own generated specific data to calculate FLOPs, you can use
+parameter ```args``` or ```kwargs```，and parameter ```input_shape``` can no longer be assigned to pass in this case. Here is an example that can be seen is inconvenient comparedt to use parameter```transformer_tokenizer```.
+
 
 ``` python
 # Transformers Model, such as bert.
@@ -157,7 +159,7 @@ The calflops provides a more detailed display of model FLOPs calculation informa
 
 ![print_results](https://github.com/MrYxJ/calculate-flops.pytorch/blob/main/screenshot/alxnet_print_result.png?raw=true)
 
-Meanwhile,by setting the parameter ```print_detailed=True``` which default to True, the calflops supports the display of the calculation results and proportion of FLOPs、NACs and Parameter in each submodule of the entire model, so that it is convenient to see the largest part of the calculation consumption in the entire model.
+Meanwhile, by setting the parameter ```print_detailed=True``` which default to True, the calflops supports the display of the calculation results and proportion of FLOPs、NACs and Parameter in each submodule of the entire model, so that it is convenient to see the largest part of the calculation consumption in the entire model.
 
 ![print_detailed](https://github.com/MrYxJ/calculate-flops.pytorch/blob/main/screenshot/alxnet_print_detailed.png?raw=true)
 

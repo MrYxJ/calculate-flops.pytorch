@@ -81,9 +81,9 @@ def calculate_flops(model,
     model_save = "../pretrain_models/" + model_name
     model = AutoModel.from_pretrained(model_save)
     tokenizer = AutoTokenizer.from_pretrained(model_save)
-    flops, macs, params = calculate_flops_pytorch(model=model, 
-                                                  input_shape=(batch_size, max_seq_length),
-                                                  transformer_tokenizer=tokenizer)
+    flops, macs, params = calculate_flops(model=model, 
+                                          input_shape=(batch_size, max_seq_length),
+                                          transformer_tokenizer=tokenizer)
     print("bert(hfl/chinese-roberta-wwm-ext) FLOPs:%s   MACs:%s   Params:%s \n" %(flops, macs, params))
     #bert(hfl/chinese-roberta-wwm-ext) FLOPs:22.36 GFLOPS   MACs:11.17 GMACs   Params:102.27 M 
 

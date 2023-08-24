@@ -5,10 +5,10 @@
  Description  : 
  Version      : 1.0
  Author       : MrYXJ
- Mail         : code.mryxj@gmail.com
+ Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-20 11:04:11
- LastEditTime : 2023-08-22 15:21:04
+ LastEditTime : 2023-08-24 16:27:47
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -268,7 +268,7 @@ class CalFlopsPipline(object):
                 "Each module caculated is listed after its name in the following order: \nparams, percentage of total params, MACs, percentage of total MACs, FLOPS, percentage of total FLOPs"
             )
             print(
-                "\nNote: 1. A module can have torch.nn.module or torch.nn.functional to compute logits (e.g. CrossEntropyLoss). They are not counted as submodules, thus not to be printed out. However they make up the difference between a parent's MACs and the sum of its submodules'.\n2. Number of floating-point operations is a theoretical estimation, thus FLOPS computed using that could be larger than the maximum system throughput.\n"
+                "\nNote: 1. A module can have torch.nn.module or torch.nn.functional to compute logits (e.g. CrossEntropyLoss). \n They are not counted as submodules in calflops and not to be printed out. However they make up the difference between a parent's MACs and the sum of its submodules'.\n2. Number of floating-point operations is a theoretical estimation, thus FLOPS computed using that could be larger than the maximum system throughput.\n"
             )
             print(self.model)
 

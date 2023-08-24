@@ -18,14 +18,12 @@
     <p>
 </h4>
 
-
-
 # Introduction
-这个工具(calflops)的作用是通过模型结构理论的计算各种神经网络中的FLOPs(浮点运算)，mac(乘加运算)和模型参数的理论量，例如：Linear, CNN, RNN, GCN， **Transformer(Bert, LlaMA等大型语言模型)** 等等包括 **任何自定义模型**。这是因为caflops支持任何基于Pytorch的```torch.nn.function.*```实现的计算操作。
+这个工具(calflops)的作用是通过模型结构理论的计算各种神经网络中的FLOPs(浮点运算)，mac(乘加运算)和模型参数的理论量，例如：Linear, CNN, RNN, GCN， **Transformer(Bert, LlaMA等大型语言模型)** 等等, 甚至支持**任何自定义模型**。这是因为caflops不仅支持```torch.nn.modu```支持基于Pytorch的```torch.nn.function.*```实现的计算操作。
 
 同时```calflops```可能是目前计算LLM(大型语言模型)FLOPs最简单的工具，通过```calflops.calculate_flops()```您只需要通过参数```transformers_tokenizer```传递需要计算的transformer模型相应的```tokenizer```，它将自动帮助您构建```input_shape```模型输入。或者，您还可以通过``` args```， ```kwargs ```处理需要具有多个输入的模型，例如bert模型的输入需要```input_ids```, ```attention_mask```等多个字段。详细信息请参见下面```calflops.calculate_flops()```的api。
 
-另外，这个包的实现过程受到[ptflops](https://github.com/sovrasov/flops-counter.pytorch)和[deepspeed](https://github.com/microsoft/DeepSpeed/tree/master/deepspeed)库的启发，们的实现都是非常好的工作，非常谢谢他们付出努力。同时，calflops包也在他们基础上改进了一些方面(更简单的使用，更多的模型支持)，详细可以使用```pip install calflops```体验一下。
+另外，这个包的实现过程受到[ptflops](https://github.com/sovrasov/flops-counter.pytorch)和[deepspeed](https://github.com/microsoft/DeepSpeed/tree/master/deepspeed)库实现的启发，他们也都是非常好的工作。同时，calflops包也在他们基础上改进了一些方面(更简单的使用，更多的模型支持)，详细可以使用```pip install calflops```体验一下。
 
 功能基本实现完毕，这个文档还在逐步补充与完善，欢迎star该项目继续关注。
 
@@ -33,17 +31,18 @@
 ## Install the latest version
 #### From PyPI:
 
-```
+```python
 pip install calflops
 ```
 
 And you also can download latest `calflops-*-py3-none-any.whl` files from https://pypi.org/project/calflops/ 
 
-```
+```python
 pip install calflops-*-py3-none-any.whl
 ```
 
-## Example
+
+### Quick Example
 ```python
 from calflops import calculate_flops
 
@@ -152,6 +151,10 @@ You can use calflops to calculate the more different model based bert, look forw
 ## Benchmark
 ### [torchvision](https://pytorch.org/docs/1.0.0/torchvision/models.html)
 
+Input data format: batch_size = 1, actually input_shape = (1, 3, 224, 224)
+
+Note: The FLOPs in the table only takes into account the computation of forward propagation of the model, **Total** refers to the total numerical representation without unit abbreviations.
+
 Model         | Input Resolution | Params(M)|Params(Total) | FLOPs(G) | FLOPs(Total) | Macs(G) | Macs(Total) 
 ---           |---               |---        |---          |---     |---          |---     |---
 alexnet       |224x224           | 61.10     | 61100840    | 1.43   | 1429740000  | 741.19 | 7418800000
@@ -218,6 +221,8 @@ inception_v3  |224x224           | 27.16     | 2.85    | 22.55       | 6.44 -->
 ## calculate_flops API
 
 ```python
+from calflops import calculate_flops
+
 def calculate_flops(model,
                     input_shape=None,
                     transformer_tokenizer=None,

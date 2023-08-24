@@ -5,10 +5,10 @@
  Description  : 
  Version      : 1.0
  Author       : MrYXJ
- Mail         : code.mryxj@gmail.com
+ Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-19 11:01:23
- LastEditTime : 2023-08-22 23:57:23
+ LastEditTime : 2023-08-24 15:07:32
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -17,7 +17,7 @@ import torch
 DEFAULT_PRECISION = 2
 
 
-def generate_transformer_input(model_tokenizer, input_shape=None, device=None):
+def generate_transformer_input(model_tokenizer, input_shape, device):
     """Automatically generates data in the form of transformes model input format.
     
     Args:
@@ -121,24 +121,70 @@ def number_to_string(num, units=None, precision=DEFAULT_PRECISION):
 
 
 def macs_to_string(macs, units=None, precision=DEFAULT_PRECISION):
+    """Trans
+
+    Args:
+        macs (_type_): _description_
+        units (_type_, optional): _description_. Defaults to None.
+        precision (_type_, optional): _description_. Defaults to DEFAULT_PRECISION.
+
+    Returns:
+        _type_: _description_
+    """
     return f"{number_to_string(macs, units=units, precision=precision)}MACs"
 
 
 def flops_to_string(flops, units=None, precision=DEFAULT_PRECISION):
+    """Trans
+
+    Args:
+        flops (_type_): _description_
+        units (_type_, optional): _description_. Defaults to None.
+        precision (_type_, optional): _description_. Defaults to DEFAULT_PRECISION.
+
+    Returns:
+        _type_: _description_
+    """
     return f"{number_to_string(flops, units=units, precision=precision)}FLOPS"
 
 
 def bytes_to_string(b, units=None, precision=DEFAULT_PRECISION):
+    """Trans
+
+    Args:
+        b (_type_): _description_
+        units (_type_, optional): _description_. Defaults to None.
+        precision (_type_, optional): _description_. Defaults to DEFAULT_PRECISION.
+
+    Returns:
+        _type_: _description_
+    """
     return f"{number_to_string(b, units=units, precision=precision)}B"
 
 
 def params_to_string(params_num, units=None, precision=DEFAULT_PRECISION):
+    """Trans
+
+    Args:
+        params_num (_type_): _description_
+        units (_type_, optional): _description_. Defaults to None.
+        precision (_type_, optional): _description_. Defaults to DEFAULT_PRECISION.
+
+    Returns:
+        _type_: _description_
+    """
     units = units.replace("B", "G") if units else units
     return number_to_string(params_num, units=units, precision=precision).replace("G", "B").strip()
 
 
 def get_module_flops(module):
     """Recursively compute the FLOP s of the model
+
+    Args:
+        module (pytorch module): model format must be pytorch
+
+    Returns:
+        int: The sum of the entire model flops
     """
     sum = module.__flops__
     # iterate over immediate children modules
@@ -149,6 +195,12 @@ def get_module_flops(module):
 
 def get_module_macs(module):
     """Recursively compute the macs s of the model
+
+    Args:
+        module (pytorch module): model format must be pytorch
+
+    Returns:
+        int: The sum of the entire model macs
     """
     sum = module.__macs__
     # iterate over immediate children modules

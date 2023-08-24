@@ -5,15 +5,15 @@
  Description  : 
  Version      : 1.0
  Author       : MrYXJ
- Mail         : code.mryxj@gmail.com
+ Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-19 22:34:47
- LastEditTime : 2023-08-22 09:57:33
+ LastEditTime : 2023-08-23 11:17:33
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
 '''
-The part of code in this file is inspired by ptflops and deepspeed profiling.
+The part of code is inspired by ptflops and deepspeed profiling.
 '''
 
 import numpy as np

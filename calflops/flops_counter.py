@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-19 10:28:55
- LastEditTime : 2023-08-24 09:54:43
+ LastEditTime : 2023-08-24 18:38:33
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -69,8 +69,8 @@ def calculate_flops(model,
                                           input_shape=(batch_size, 3, 224, 224),
                                           output_as_string=True,
                                           output_precision=4)
-    print("alexnet FLOPs:%s   MACs:%s   Params:%s \n" %(flops, macs, params))
-    #alexnet FLOPs:1.4297 GFLOPS   MACs:714.188 MMACs   Params:61.1008 M 
+    print("Alexnet FLOPs:%s   MACs:%s   Params:%s \n" %(flops, macs, params))
+    #Alexnet FLOPs:1.4297 GFLOPS   MACs:714.188 MMACs   Params:61.1008 M 
 
     # Transformers Model, such as bert.
     from transformers import AutoModel
@@ -84,8 +84,8 @@ def calculate_flops(model,
     flops, macs, params = calculate_flops(model=model, 
                                           input_shape=(batch_size, max_seq_length),
                                           transformer_tokenizer=tokenizer)
-    print("bert(hfl/chinese-roberta-wwm-ext) FLOPs:%s   MACs:%s   Params:%s \n" %(flops, macs, params))
-    #bert(hfl/chinese-roberta-wwm-ext) FLOPs:22.36 GFLOPS   MACs:11.17 GMACs   Params:102.27 M 
+    print("Bert(hfl/chinese-roberta-wwm-ext) FLOPs:%s   MACs:%s   Params:%s \n" %(flops, macs, params))
+    #Bert(hfl/chinese-roberta-wwm-ext) FLOPs:22.36 GFLOPS   MACs:11.17 GMACs   Params:102.27 M 
 
     # Large Languase Model, such as llama2-7b.
     from transformers import LlamaTokenizer
@@ -99,8 +99,8 @@ def calculate_flops(model,
     flops, macs, params = calculate_flops(model=model,
                                           input_shape=(batch_size, max_seq_length),
                                           transformer_tokenizer=tokenizer)
-    print("llama2(7B) FLOPs:%s   MACs:%s   Params:%s \n" %(flops, macs, params))
-    #llama2(7B) FLOPs:1.7 TFLOPS   MACs:850.00 GMACs   Params:6.74 B 
+    print("Llama2(7B) FLOPs:%s   MACs:%s   Params:%s \n" %(flops, macs, params))
+    #Llama2(7B) FLOPs:1.7 TFLOPS   MACs:850.00 GMACs   Params:6.74 B 
 
     Returns:
         The number of floating-point operations, multiply-accumulate operations (MACs), and parameters in the model.

@@ -48,8 +48,6 @@ If model has only one input, you just need set the model input size by parameter
 
 ```python
 from calflops import calculate_flops
-
-# Deep Learning Model, such as alexnet.
 from torchvision import models
 
 model = models.alexnet()
@@ -71,8 +69,10 @@ use parameter ```input_shape``` and ```transformer_tokenizer```
 
 ``` python
 # Transformers Model, such as bert.
+from calflops import calculate_flops
 from transformers import AutoModel
 from transformers import AutoTokenizer
+
 batch_size = 1
 max_seq_length = 128
 model_name = "hfl/chinese-roberta-wwm-ext/"
@@ -91,6 +91,7 @@ use parameter ```args``` or ```kwargs```:
 
 ``` python
 # Transformers Model, such as bert.
+from calflops import calculate_flops
 from transformers import AutoModel
 from transformers import AutoTokenizer
 
@@ -133,6 +134,7 @@ Note here that the tokenizer must correspond to the llm model because llm tokeni
 
 ``` python
 #Large Languase Model, such as llama2-7b.
+from calflops import calculate_flops
 from transformers import LlamaTokenizer
 from transformers import LlamaForCausalLM
 
@@ -149,11 +151,15 @@ print("Llama2(7B) FLOPs:%s   MACs:%s   Params:%s \n" %(flops, macs, params))
 #Llama2(7B) FLOPs:1.7 TFLOPS   MACs:850.00 GMACs   Params:6.74 B 
 ```
 
-### Show each module result of model 
-You can use 
+### Show each submodule result of FLOPs、MACs、Params
 
+The calflops provides a more detailed display of model FLOPs calculation information. By setting the parameter ```print_result=True```, which defaults to True, flops of the model will be printed in the terminal or jupyter interface.
 
+![print_results](https://github.com/MrYxJ/calculate-flops.pytorch/blob/main/screenshot/alexnet_print_result.png?raw=true)
 
+Meanwhile,by setting the parameter ```print_detailed=True``` which default to True, the calflops supports the display of the calculation results and proportion of FLOPs、NACs and Parameter in each submodule of the entire model, so that it is convenient to see the largest part of the calculation consumption in the entire model.
+
+![print_detailed](https://github.com/MrYxJ/calculate-flops.pytorch/blob/main/screenshot/alexnet_print_detailed.png?raw=true)
 
 ### More use introduction
 

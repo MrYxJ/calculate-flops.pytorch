@@ -8,13 +8,14 @@
  Mail         : code_job@163.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-24 11:48:59
- LastEditTime : 2023-08-24 17:02:58
+ LastEditTime : 2023-08-24 19:42:16
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
 from calflops import calculate_flops
 from transformers import AutoModel
 from transformers import AutoTokenizer
+
 batch_size = 1
 max_seq_length = 128
 model_name = "hfl/chinese-roberta-wwm-ext/"

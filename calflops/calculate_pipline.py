@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-20 11:04:11
- LastEditTime : 2023-08-24 16:27:47
+ LastEditTime : 2023-08-24 18:26:12
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -216,7 +216,7 @@ class CalFlopsPipline(object):
               "number of parameters (Params), number of multiply-accumulate operations(MACs),\n"
               "number of floating-point operations (FLOPs), floating-point operations per second (FLOPS),\n"
               "fwd FLOPs (model forward propagation FLOPs), bwd FLOPs (model backward propagation FLOPs),\n"
-              "default model backpropagation takes .2%f times as much computation as forward propagation.\n" % self.compute_bp_factor)
+              "default model backpropagation takes %.2f times as much computation as forward propagation.\n" % self.compute_bp_factor)
         line_fmt = '{:<70}  {:<8}'
 
         print(line_fmt.format('Total Training Params: ', params_to_string(total_params)))

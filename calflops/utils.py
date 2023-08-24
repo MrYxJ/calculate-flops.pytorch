@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-19 11:01:23
- LastEditTime : 2023-08-24 15:07:32
+ LastEditTime : 2023-08-24 18:51:33
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -121,57 +121,57 @@ def number_to_string(num, units=None, precision=DEFAULT_PRECISION):
 
 
 def macs_to_string(macs, units=None, precision=DEFAULT_PRECISION):
-    """Trans
+    """Converts macs in numeric form to string form.
 
     Args:
-        macs (_type_): _description_
-        units (_type_, optional): _description_. Defaults to None.
-        precision (_type_, optional): _description_. Defaults to DEFAULT_PRECISION.
+        macs (int): Calculate the results of the model macs in numerical form.
+        units (str, optional): The unit of macs after conversion to string representation, such as TMACs,GMACs,MMACs,KMACs
+        precision (int, optional): The number of digits of the result is preserved. Defaults to DEFAULT_PRECISION.
 
     Returns:
-        _type_: _description_
+        string: The string representation of macs.
     """
     return f"{number_to_string(macs, units=units, precision=precision)}MACs"
 
 
 def flops_to_string(flops, units=None, precision=DEFAULT_PRECISION):
-    """Trans
+    """Converts flops in numeric form to string form.
 
     Args:
-        flops (_type_): _description_
-        units (_type_, optional): _description_. Defaults to None.
-        precision (_type_, optional): _description_. Defaults to DEFAULT_PRECISION.
+        flops (int): Calculate the results of the model flops in numerical form.
+        units (str, optional): The unit of flops after conversion to string representation, such as TFLOPs,GFLOPs,MFLOPs,KFLOPs.
+        precision (int, optional): The number of digits of the result is preserved. Defaults to DEFAULT_PRECISION.
 
     Returns:
-        _type_: _description_
+        string: The string representation of flops.
     """
     return f"{number_to_string(flops, units=units, precision=precision)}FLOPS"
 
 
 def bytes_to_string(b, units=None, precision=DEFAULT_PRECISION):
-    """Trans
+    """Converts bytes in numeric form to string form.
 
     Args:
-        b (_type_): _description_
-        units (_type_, optional): _description_. Defaults to None.
-        precision (_type_, optional): _description_. Defaults to DEFAULT_PRECISION.
+        b (int): Calculate the results of the bytes in numerical form.
+        units (str, optional): The unit of bytes after conversion to string representation, such as TB,GB,MB,KB.
+        precision (int, optional): The number of digits of the result is preserved. Defaults to DEFAULT_PRECISION.
 
     Returns:
-        _type_: _description_
+        string: The string representation of bytes.
     """
     return f"{number_to_string(b, units=units, precision=precision)}B"
 
 
 def params_to_string(params_num, units=None, precision=DEFAULT_PRECISION):
-    """Trans
+    """Converts params in numeric form to string form.
 
     Args:
-        params_num (_type_): _description_
-        units (_type_, optional): _description_. Defaults to None.
-        precision (_type_, optional): _description_. Defaults to DEFAULT_PRECISION.
+        params_num (int): Calculate the results of the model param in numerical form.
+        units (str, optional): The unit of params after conversion to string representation.
+        precision (int, optional): The number of digits of the result is preserved. Defaults to DEFAULT_PRECISION.
 
     Returns:
-        _type_: _description_
+        string: The string representation of params.
     """
     units = units.replace("B", "G") if units else units
     return number_to_string(params_num, units=units, precision=precision).replace("G", "B").strip()

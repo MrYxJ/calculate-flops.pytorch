@@ -5,7 +5,7 @@
  Description  : 
  Version      : 1.0
  Author       : MrYXJ
- Mail         : code_job@163.com
+ Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-24 11:49:08
  LastEditTime : 2023-08-24 17:03:29

@@ -279,11 +279,11 @@ Input data format: batch_size=1, seq_len=128
 In addition, note that fwd + bwd does not include calculation losses for model parameter  activation recomputation, if the results wants to include activation recomputation that is only necessary to multiply the result of fwd FLOPs by 4(According to the paper: https://arxiv.org/pdf/2205.05198.pdf), and in calflops you can easily set parameter ```computer_bp_factor=3 ```to make the result of including the activate the recalculation.
 
 
-
 Model         | Input Shape | Params(B)|Params(Total)| fwd FLOPs(G) | fwd MACs(G) | fwd + bwd FLOPs(G) | fwd + bwd MACs(G)  | 
 ---           |---          |---       |---          |---         |---       |---        |--- 
 bloom-1b7     |(1,128)      | 1.72B    | 1722408960  | 310.92     | 155.42   | 932.76    | 466.27
 bloom-7b1     |(1,128)      | 7.07B    | 7069016064  | 1550.39    | 775.11   | 4651.18   | 2325.32
+bloomz-1b7    |(1,128)      | 1.72B    | 1722408960  | 310.92     | 155.42   | 932.76    | 466.27
 baichuan-7B   |(1,128)      | 7B       | 7000559616  | 1733.62    | 866.78   | 5200.85   | 2600.33
 chatglm-6b    |(1,128)      | 6.17B    | 6173286400  | 1587.66    | 793.75   | 4762.97   | 2381.24
 chatglm2-6b   |(1,128)      | 6.24B    | 6243584000  | 1537.68    | 768.8    | 4613.03   | 2306.4 
@@ -293,7 +293,10 @@ llama2-7b     |(1,128)      | 6.74B    | 6738415616  | 1700.06    | 850      | 5
 llama2-7b-chat |(1,128)     | 6.74B    | 6738415616  | 1700.06    | 850      | 5100.19   | 2550
 chinese-llama-7b | (1,128)  | 6.89B    | 6885486592  | 1718.89    | 859.41   |5156.67   | 2578.24
 chinese-llama-plus-7b| (1,128) | 6.89B | 6885486592  | 1718.89    | 859.41   |5156.67   | 2578.24
+EleutherAI/pythia-1.4b | (1,128) | 1.31B | 1311625216  | 312.54    | 156.23   |937.61   | 468.69
+EleutherAI/pythia-12b | (1,128) | 11.59B | 11586549760  | 2911.47    | 1455.59   | 8734,41 | 4366.77
 moss-moon-003-sft |(1,128) | 16.72B  | 16717980160 |  4124.93    | 2062.39  |  12374.8  | 6187.17
+moss-moon-003-sft-plugin |(1,128) | 16.06B  | 16060416000 |  3956.62    | 1978.24  |   11869.9  | 5934.71
 
 We can draw some simple and interesting conclusions from the table above:
 - The chatglm2-6b in the model of the same scale, the model parameters are smaller, and FLOPs is also smaller, which has certain advantages in speed performance.

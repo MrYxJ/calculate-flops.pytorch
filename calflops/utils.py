@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-19 11:01:23
- LastEditTime : 2023-08-24 18:51:33
+ LastEditTime : 2023-09-03 15:51:33
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -207,3 +207,13 @@ def get_module_macs(module):
     for child in module.children():
         sum += get_module_macs(child)
     return sum
+
+
+def convert_bytes(size):
+    "Converts `size` from bytes to the largest possible unit"
+    for x in ["bytes", "KB", "MB", "GB", "TB"]:
+        if size < 1024.0:
+            return f"{round(size, 2)} {x}"
+        size /= 1024.0
+
+    return f"{round(size, 2)} PB"

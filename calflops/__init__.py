@@ -8,11 +8,12 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-19 10:27:55
- LastEditTime : 2023-08-23 11:18:07
+ LastEditTime : 2023-09-03 16:13:39
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
 from .flops_counter import calculate_flops
+from .flops_counter_hf import calculate_flops_hf
 
 from .utils import generate_transformer_input
 from .utils import number_to_string

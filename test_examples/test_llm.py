@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-24 11:49:08
- LastEditTime : 2023-08-24 17:03:29
+ LastEditTime : 2023-09-03 11:38:11
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -26,3 +26,4 @@ flops, macs, params = calculate_flops(model=model,
                                       input_shape=(batch_size, max_seq_length),
                                       transformer_tokenizer=tokenizer)
 print("Llama2(7B) FLOPs:%s   MACs:%s   Params:%s \n" %(flops, macs, params))
+

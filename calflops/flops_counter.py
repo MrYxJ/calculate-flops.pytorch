@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-19 10:28:55
- LastEditTime : 2023-08-24 18:38:33
+ LastEditTime : 2023-09-03 17:11:41
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -22,6 +22,8 @@ from .utils import macs_to_string
 from .utils import params_to_string
 
 from .calculate_pipline import CalFlopsPipline
+
+
 
 def calculate_flops(model,
                     input_shape=None,
@@ -107,7 +109,7 @@ def calculate_flops(model,
     """
 
     assert isinstance(model, nn.Module), "model must be a PyTorch module"
-    #assert transformers_tokenizer and auto_generate_transformers_input and "transformers" in str(type(model)), "The model must be a transformers model if args of auto_generate_transformers_input is True and transformers_tokenizer is not None"
+    # assert transformers_tokenizer and auto_generate_transformers_input and "transformers" in str(type(model)), "The model must be a transformers model if args of auto_generate_transformers_input is True and transformers_tokenizer is not None"
     model.eval()
 
     is_Transformer = True if "transformers" in str(type(model)) else False
@@ -116,8 +118,10 @@ def calculate_flops(model,
                                                   include_backPropagation=include_backPropagation,
                                                   compute_bp_factor=compute_bp_factor)
     calculate_flops_pipline.start_flops_calculate(ignore_list=ignore_modules)
-
+    
     device = next(model.parameters()).device
+    model = model.to(device)
+    
     if input_shape is not None:
         assert len(args) == 0 and len(kwargs) == 0, "args and kwargs must be empty value if input_shape is not None, then will be generate random input by inpust_shape"
         assert type(input_shape) is tuple, "input_shape must be a tuple"
@@ -147,6 +151,8 @@ def calculate_flops(model,
                                                 device=device)
     
     if kwargs:
+        print("kwargs device:", device)
+        print(kwargs)
         for key, value in kwargs.items():
             kwargs[key] = value.to(device)
 

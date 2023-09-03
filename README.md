@@ -63,7 +63,57 @@ print("Alexnet FLOPs:%s   MACs:%s   Params:%s \n" %(flops, macs, params))
 
 If the model has multiple inputs, use the parameters ```args``` or ```kargs```, as shown in the Transfomer Model below.
 
-### Transformer Model 
+
+### Calculate Huggingface Model By Model Name(Online)
+
+No need to download the entire parameter weight of the model to the local, just by the model name can test any open source large model on the huggingface platform.
+
+![](./screenshot/huggingface_model_name.png)
+
+
+```python
+from calflops import calculate_flops_hf
+
+batch_size, max_seq_length = 1, 128
+model_name = "baichuan-inc/Baichuan-13B-Chat"
+
+flops, macs, params = calculate_flops_hf(model_name=model_name, input_shape=(batch_size, max_seq_length))
+print("%s FLOPs:%s  MACs:%s  Params:%s \n" %(model_name, flops, macs, params))
+```
+
+You can also use this model urls of huggingface platform to calculate it FLOPs.
+
+![](./screenshot/huggingface_model_name2.png)
+
+```python
+from calflops import calculate_flops_hf
+
+batch_size, max_seq_length = 1, 128
+model_name = "https://huggingface.co/THUDM/chatglm2-6b" # THUDM/chatglm2-6b
+flops, macs, params = calculate_flops_hf(model_name=model_name, input_shape=(batch_size, max_seq_length))
+print("%s FLOPs:%s  MACs:%s  Params:%s \n" %(model_name, flops, macs, params))
+```
+
+There are some model uses that require an application first, and you only need to pass the application in through the ```access_token``` to calculate its FLOPs.
+
+
+![](./screenshot/huggingface_model_name3.png)
+
+```python
+from calflops import calculate_flops_hf
+
+batch_size, max_seq_length = 1, 128
+model_name = "meta-llama/Llama-2-7b"
+access_token = "" # your application for using llama2
+
+flops, macs, params = calculate_flops_hf(model_name=model_name,
+                                         access_token=access_token,
+                                         input_shape=(batch_size, max_seq_length))
+print("%s FLOPs:%s  MACs:%s  Params:%s \n" %(model_name, flops, macs, params))
+```
+
+
+### Transformer Model (Local)
 
 Compared to the CNN Model, Transformer Model if you want to use the parameter ```input_shape``` to make calflops automatically generating the input data, you should pass its corresponding tokenizer through the parameter ```transformer_tokenizer```.
 
@@ -73,8 +123,7 @@ from calflops import calculate_flops
 from transformers import AutoModel
 from transformers import AutoTokenizer
 
-batch_size = 1
-max_seq_length = 128
+batch_size, max_seq_length = 1, 128
 model_name = "hfl/chinese-roberta-wwm-ext/"
 model_save = "../pretrain_models/" + model_name
 model = AutoModel.from_pretrained(model_save)
@@ -97,8 +146,8 @@ from calflops import calculate_flops
 from transformers import AutoModel
 from transformers import AutoTokenizer
 
-batch_size = 1
-max_seq_length = 128
+
+batch_size, max_seq_length = 1, 128
 model_name = "hfl/chinese-roberta-wwm-ext/"
 model_save = "/code/yexiaoju/generate_tags/models/pretrain_models/" + model_name
 model = AutoModel.from_pretrained(model_save)
@@ -132,6 +181,22 @@ print("Bert(hfl/chinese-roberta-wwm-ext) FLOPs:%s   MACs:%s   Params:%s \n" %(fl
 
 ### Large Language Model
 
+#### Online
+
+```python
+from calflops import calculate_flops_hf
+
+batch_size, max_seq_length = 1, 128
+model_name = "meta-llama/Llama-2-7b"
+access_token = "" # your application for using llama 
+
+flops, macs, params = calculate_flops_hf(model_name=model_name,
+                                         access_token=access_token,
+                                         input_shape=(batch_size, max_seq_length))
+print("%s FLOPs:%s  MACs:%s  Params:%s \n" %(model_name, flops, macs, params))
+```
+
+#### Local
 Note here that the tokenizer must correspond to the llm model because llm tokenizer processes maybe are different.
 
 ``` python
@@ -140,8 +205,7 @@ from calflops import calculate_flops
 from transformers import LlamaTokenizer
 from transformers import LlamaForCausalLM
 
-batch_size = 1
-max_seq_length = 128
+batch_size, max_seq_length = 1, 128
 model_name = "llama2_hf_7B"
 model_save = "../model/" + model_name
 model = LlamaForCausalLM.from_pretrained(model_save)
@@ -193,7 +257,7 @@ You can use the parameter ignore_modules to select which modules of model are ig
 You just need to assign "generate" to parameter forward_mode.
 </details>
 
-### **Api** of the **calflops**
+### **API** of the **calflops**
 
 <details>
 <summary> calflops.calculate_flops() </summary>
@@ -235,6 +299,61 @@ def calculate_flops(model,
         ignore_modules ([type], optional): the list of modules to ignore during profiling. Defaults to None.
 ```
 </details>
+
+
+<details>
+<summary> calflops.calculate_flops_hf() </summary>
+
+``` python
+def calculate_flops_hf(model_name,
+                       input_shape=None,
+                       library_name="transformers",
+                       trust_remote_code=True,
+                       access_token="",
+                       forward_mode="forward",
+                       include_backPropagation=False,
+                       compute_bp_factor=2.0,
+                       print_results=True,
+                       print_detailed=True,
+                       output_as_string=True,
+                       output_precision=2,
+                       output_unit=None,
+                       ignore_modules=None):
+    
+    """Returns the total floating-point operations, MACs, and parameters of a model.
+
+    Args:
+        model_name (str): The model name in huggingface platform https://huggingface.co/models, such as meta-llama/Llama-2-7b、baichuan-inc/Baichuan-13B-Chat etc.
+        input_shape (tuple, optional): Input shape to the model. If args and kwargs is empty, the model takes a tensor with this shape as the only positional argument. Default to [].
+        trust_remote_code (bool, optional): Trust the code in the remote library for the model structure.
+        access_token (str, optional): Some models need to apply for a access token, such as meta llama2 etc.
+        forward_mode (str, optional): To determine the mode of model inference, Default to 'forward'. And use 'generate' if model inference uses model.generate().
+        include_backPropagation (bool, optional): Decides whether the final return FLOPs computation includes the computation for backpropagation.
+        compute_bp_factor (float, optional): The model backpropagation is a multiple of the forward propagation computation. Default to 2.
+        print_results (bool, optional): Whether to print the model profile. Defaults to True.
+        print_detailed (bool, optional): Whether to print the detailed model profile. Defaults to True.
+        output_as_string (bool, optional): Whether to print the output as string. Defaults to True.
+        output_precision (int, optional) : Output holds the number of decimal places if output_as_string is True. Default to 2.
+        output_unit (str, optional): The unit used to output the result value, such as T, G, M, and K. Default is None, that is the unit of the output decide on value.
+        ignore_modules ([type], optional): the list of modules to ignore during profiling. Defaults to None.
+
+    Example:
+    .. code-block:: python
+    from calflops import calculate_flops_hf
+    
+    batch_size = 1
+    max_seq_length = 128
+    model_name = "baichuan-inc/Baichuan-13B-Chat"
+    flops, macs, params = calculate_flops_hf(model_name=model_name,
+                                            input_shape=(batch_size, max_seq_length))
+    print("%s FLOPs:%s  MACs:%s  Params:%s \n" %(model_name, flops, macs, params))
+
+    Returns:
+        The number of floating-point operations, multiply-accumulate operations (MACs), and parameters in the model.
+    """    
+```
+</details>
+
 
 <details>
 <summary> calflops.generate_transformer_input()</summary>

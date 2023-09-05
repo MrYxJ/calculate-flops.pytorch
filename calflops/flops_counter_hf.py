@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-09-03 11:03:58
- LastEditTime : 2023-09-03 17:38:52
+ LastEditTime : 2023-09-05 15:42:29
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -23,6 +23,7 @@ from .utils import macs_to_string
 from .utils import params_to_string
 from .estimate import create_empty_model
 from .calculate_pipline import CalFlopsPipline
+
 
 def calculate_flops_hf(model_name,
                        input_shape=None,
@@ -55,7 +56,7 @@ def calculate_flops_hf(model_name,
         output_precision (int, optional) : Output holds the number of decimal places if output_as_string is True. Default to 2.
         output_unit (str, optional): The unit used to output the result value, such as T, G, M, and K. Default is None, that is the unit of the output decide on value.
         ignore_modules ([type], optional): the list of modules to ignore during profiling. Defaults to None.
-
+        
     Example:
     .. code-block:: python
     from calflops import calculate_flops_hf
@@ -70,22 +71,22 @@ def calculate_flops_hf(model_name,
     Returns:
         The number of floating-point operations, multiply-accumulate operations (MACs), and parameters in the model.
     """
-
-    model = create_empty_model(model_name=model_name,
-                               library_name=library_name,
-                               trust_remote_code=trust_remote_code,
-                               access_token=access_token)
+    
+    empty_model = create_empty_model(model_name=model_name,
+                                     library_name=library_name,
+                                     trust_remote_code=trust_remote_code,
+                                     access_token=access_token)
     
     tokenizer = AutoTokenizer.from_pretrained(model_name,
                                               trust_remote_code=trust_remote_code,
                                               access_token=access_token)
     
-    assert isinstance(model, nn.Module), "model must be a PyTorch module"
-    device = next(model.parameters()).device
-    model = model.to(device)
-    model.eval()
-
-    calculate_flops_pipline = CalFlopsPipline(model=model, 
+    assert isinstance(empty_model, nn.Module), "model must be a PyTorch module"
+    device = next(empty_model.parameters()).device
+    empty_model = empty_model.to(device)
+    empty_model.eval()
+   
+    calculate_flops_pipline = CalFlopsPipline(model=empty_model,
                                               include_backPropagation=include_backPropagation,
                                               compute_bp_factor=compute_bp_factor)
     calculate_flops_pipline.start_flops_calculate(ignore_list=ignore_modules)
@@ -93,7 +94,6 @@ def calculate_flops_hf(model_name,
     if input_shape is not None:
         assert type(input_shape) is tuple, "input_shape must be a tuple"
         assert len(input_shape) >= 1, "input_shape must have at least one element"
-
         assert len(input_shape) == 2, "the format of input_shape must be (batch_size, seq_len) if model is transformers model and auto_generate_transformers_input if True"
         kwargs = generate_transformer_input(input_shape=input_shape,
                                             model_tokenizer=tokenizer,
@@ -102,32 +102,39 @@ def calculate_flops_hf(model_name,
         kwargs = generate_transformer_input(input_shape=None,
                                             model_tokenizer=tokenizer,
                                             device=device)
-      
+    
     for key, value in kwargs.items():
         kwargs[key] = value.to(device)
-
-    if forward_mode == 'forward':
-        _ = model(**kwargs)
-    if forward_mode == 'generate':
-        _ = model.generate(**kwargs)
-
-    flops = calculate_flops_pipline.get_total_flops()
-    macs = calculate_flops_pipline.get_total_macs()
-    params = calculate_flops_pipline.get_total_params()
-    if print_results:
-        calculate_flops_pipline.print_model_pipline(units=output_unit,
-                                                    precision=output_precision,
-                                                    print_detailed=print_detailed)
+    
+    try:
+        if forward_mode == 'forward':
+            _ = empty_model(**kwargs)
+        if forward_mode == 'generate':
+            _ = empty_model.generate(**kwargs)
+    except Exception as e:
+        ErrorInformation = """The model:%s meet a problem in forwarding, perhaps because the model:%s cannot be deduced on meta device. 
+        You can downloaded complete model parameters in locally from huggingface platform, and then using another function:calflops.calculate_flops(model, tokenizer) to calculate FLOPs on the gpu device.\n
+        Error Information: %s\n.
+        """ % (model_name, model_name, e)
+        print(ErrorInformation)
+        return None, None, None
+    else:
+        flops = calculate_flops_pipline.get_total_flops()
+        macs = calculate_flops_pipline.get_total_macs()
+        params = calculate_flops_pipline.get_total_params()
+        if print_results:
+            calculate_flops_pipline.print_model_pipline(units=output_unit,
+                                                        precision=output_precision,
+                                                        print_detailed=print_detailed)
+        calculate_flops_pipline.end_flops_calculate()
         
-    calculate_flops_pipline.end_flops_calculate()
-   
-    if include_backPropagation:
-        flops = flops * (1 + compute_bp_factor) 
-        macs = macs * (1 + compute_bp_factor)
-
-    if output_as_string:
-        return flops_to_string(flops, units=output_unit, precision=output_precision),\
-               macs_to_string(macs, units=output_unit, precision=output_precision),  \
-               params_to_string(params, units=output_unit, precision=output_precision)
-
-    return flops, macs, params
+        if include_backPropagation:
+            flops = flops * (1 + compute_bp_factor)
+            macs = macs * (1 + compute_bp_factor)
+        
+        if output_as_string:
+            return flops_to_string(flops, units=output_unit, precision=output_precision),\
+                macs_to_string(macs, units=output_unit, precision=output_precision),  \
+                params_to_string(params, units=output_unit, precision=output_precision)
+        
+        return flops, macs, params

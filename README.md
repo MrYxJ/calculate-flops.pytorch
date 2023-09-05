@@ -22,9 +22,23 @@ calflops: a FLOPs and Params calculate tool for neural networks
 # Introduction
 This tool(calflops) is designed to compute the theoretical amount of FLOPs(floating-point operations)、MACs(multiply-add operations) and Parameters in all various neural networks, such as Linear、 CNN、 RNN、 GCN、**Transformer(Bert、LlaMA etc Large Language Model)**，even including **any custom models** via ```torch.nn.function.*``` as long as based on the Pytorch implementation. Meanwhile this tool supports the printing of FLOPS, Parameter calculation value and proportion of each submodule of the model, it is convient for users to understand the performance consumption of each part of the model.
 
-For LLM, this is probably the easiest tool to calculate FLOPs, you just need assign llm corresponding tokenizer to the parameter: ```transformers_tokenizer``` to pass in funcional of ```calflops.calculate_flops()```, and it will automatically help you build the model input data whose size is input_shape.  Alternatively, you also can pass in the input data of models which need multi data as input that you have constructed.
+For LLM, this is probably the easiest tool to calculate FLOPs and it is very convenient for **huggingface** platform models. You can use ```calflops.calculate_flops_hf(model_name)``` by `model_name` which in [huggingface models](https://huggingface.co/models) to calculate model FLOPs without downloading entire model weights locally.Notice this method requires the model to support the empty model being created for model inference in meta device.
 
-In addition, the implementation process of this package inspired by [ptflops](https://github.com/sovrasov/flops-counter.pytorch) and [deepspeed](https://github.com/microsoft/DeepSpeed/tree/master/deepspeed) libraries, Thanks for their great efforts, they are both very good work. Meanwhile this package also improves some aspects(more simple use、more model support) based on them.
+![](./screenshot/huggingface_model_names.png)
+
+``` python
+from calflops import calculate_flops_hf
+
+model_name = "meta-llama/Llama-2-7b"
+access_token = "..." # your application token for using llama2
+flops, macs, params = calculate_flops_hf(model_name=model_name, access_token=access_token) # default input shape: (1, 128)
+print("%s FLOPs:%s  MACs:%s  Params:%s \n" %(model_name, flops, macs, params))
+```
+
+If model can't inference in meta device,  you just need assign llm corresponding tokenizer to the parameter: ```transformers_tokenizer``` to pass in funcional of ```calflops.calculate_flops()```, and it will automatically help you build the model input data whose size is input_shape.  Alternatively, you also can pass in the input data of models which need multi data as input that you have constructed.
+
+
+In addition, the implementation process of this package inspired by [ptflops](https://github.com/sovrasov/flops-counter.pytorch)、[deepspeed](https://github.com/microsoft/DeepSpeed/tree/master/deepspeed)、[hf accelerate](https://github.com/huggingface/accelerate) libraries, Thanks for their great efforts, they are both very good work. Meanwhile this package also improves some aspects to calculate FLOPs based on them.
 
 ## How to install
 ### Install the latest version

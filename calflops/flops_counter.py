@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-19 10:28:55
- LastEditTime : 2023-09-03 17:11:41
+ LastEditTime : 2023-09-05 15:37:21
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -22,7 +22,6 @@ from .utils import macs_to_string
 from .utils import params_to_string
 
 from .calculate_pipline import CalFlopsPipline
-
 
 
 def calculate_flops(model,
@@ -151,8 +150,6 @@ def calculate_flops(model,
                                                 device=device)
     
     if kwargs:
-        print("kwargs device:", device)
-        print(kwargs)
         for key, value in kwargs.items():
             kwargs[key] = value.to(device)
 

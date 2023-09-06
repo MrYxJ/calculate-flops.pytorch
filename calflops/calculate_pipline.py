@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-20 11:04:11
- LastEditTime : 2023-08-24 18:26:12
+ LastEditTime : 2023-09-06 20:39:49
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -55,7 +55,7 @@ class CalFlopsPipline(object):
         self.compute_bp_factor = compute_bp_factor                   # Backpropagation takes twice as much computation as forward propagation
         self.pipline_started = False                                 # The flag of calculating FLOPs pipline started
         self.func_patched = False                                    # The flag of wheather calculating functional are patched
-
+    
     def start_flops_calculate(self, ignore_list=None):
         """Starts the pipline of calculating FLOPs.
 

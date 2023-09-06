@@ -35,6 +35,7 @@ flops, macs, params = calculate_flops_hf(model_name=model_name, access_token=acc
 print("%s FLOPs:%s  MACs:%s  Params:%s \n" %(model_name, flops, macs, params))
 ```
 
+
 If model can't inference in meta device,  you just need assign llm corresponding tokenizer to the parameter: ```transformers_tokenizer``` to pass in funcional of ```calflops.calculate_flops()```, and it will automatically help you build the model input data whose size is input_shape.  Alternatively, you also can pass in the input data of models which need multi data as input that you have constructed.
 
 
@@ -255,10 +256,10 @@ The calflops support  multiple inputs of model, just use parameter args or kwarg
 </details>
 
 <details>
-<summary> How to calculate the results of FLOPS include forward and backpropagation of the model </summary>
-You can use the parameter include_backPropagation to select whether the calculation of FLOPs results includes the process of model backpropagation. The default is False, that is result of FLOPs only include forward. 
+<summary> How to calculate the results of FLOPS include forward and backward pass of the model </summary>
+You can use the parameter include_backPropagation to select whether the calculation of FLOPs results includes the process of model backpropagation. The default is False, that is result of FLOPs only include forward pass. 
 
-In addition, the parameter compute_bp_factor to determine how many times backward as much computation as forward propagation.The defaults that is 2.0, according to https://epochai.org/blog/backward-forward-FLOP-ratio
+In addition, the parameter compute_bp_factor to determine how many times backward as much computation as forward pass.The defaults that is 2.0, according to https://epochai.org/blog/backward-forward-FLOP-ratio
 </details>
 
 <details>

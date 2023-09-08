@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-09-03 11:03:58
- LastEditTime : 2023-09-08 23:46:46
+ LastEditTime : 2023-09-09 00:20:06
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -27,7 +27,6 @@ from .calculate_pipline import CalFlopsPipline
 
 def calculate_flops_hf(model_name,
                        input_shape=None,
-                       library_name="transformers",
                        trust_remote_code=True,
                        access_token="",
                        forward_mode="forward",
@@ -74,7 +73,7 @@ def calculate_flops_hf(model_name,
     """
     
     empty_model = create_empty_model(model_name=model_name,
-                                     library_name=library_name,
+                                     library_name=None,
                                      trust_remote_code=trust_remote_code,
                                      access_token=access_token)
     

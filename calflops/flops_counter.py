@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-19 10:28:55
- LastEditTime : 2023-09-05 15:37:21
+ LastEditTime : 2023-09-07 23:39:17
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -27,11 +27,11 @@ from .calculate_pipline import CalFlopsPipline
 def calculate_flops(model,
                     input_shape=None,
                     transformer_tokenizer=None,
-                    args=[],   
+                    args=[],
                     kwargs={},
                     forward_mode="forward",
                     include_backPropagation=False,
-                    compute_bp_factor=2.0,         
+                    compute_bp_factor=2.0,
                     print_results=True,
                     print_detailed=True,
                     output_as_string=True,
@@ -171,7 +171,7 @@ def calculate_flops(model,
     params = calculate_flops_pipline.get_total_params()
     
     if print_results:
-        calculate_flops_pipline.print_model_pipline(units=output_unit,
+        return_print = calculate_flops_pipline.print_model_pipline(units=output_unit,
                                                     precision=output_precision,
                                                     print_detailed=print_detailed)
 

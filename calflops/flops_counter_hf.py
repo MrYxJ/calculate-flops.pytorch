@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-09-03 11:03:58
- LastEditTime : 2023-09-05 15:42:29
+ LastEditTime : 2023-09-07 23:54:33
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -38,7 +38,8 @@ def calculate_flops_hf(model_name,
                        output_as_string=True,
                        output_precision=2,
                        output_unit=None,
-                       ignore_modules=None):
+                       ignore_modules=None,
+                       return_results=False):
     
     """Returns the total floating-point operations, MACs, and parameters of a model.
 
@@ -122,10 +123,13 @@ def calculate_flops_hf(model_name,
         flops = calculate_flops_pipline.get_total_flops()
         macs = calculate_flops_pipline.get_total_macs()
         params = calculate_flops_pipline.get_total_params()
-        if print_results:
-            calculate_flops_pipline.print_model_pipline(units=output_unit,
-                                                        precision=output_precision,
-                                                        print_detailed=print_detailed)
+
+  
+        print_return = calculate_flops_pipline.print_return_model_pipline(units=output_unit,
+                                                    precision=output_precision,
+                                                    print_detailed=print_detailed,
+                                                    print_results=print_results)
+            
         calculate_flops_pipline.end_flops_calculate()
         
         if include_backPropagation:
@@ -137,4 +141,7 @@ def calculate_flops_hf(model_name,
                 macs_to_string(macs, units=output_unit, precision=output_precision),  \
                 params_to_string(params, units=output_unit, precision=output_precision)
         
-        return flops, macs, params
+        if return_results:
+            return flops, macs, params, print_return
+        else:
+            return flops, macs, params

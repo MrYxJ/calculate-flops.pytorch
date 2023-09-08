@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-09-03 11:03:58
- LastEditTime : 2023-09-07 23:54:33
+ LastEditTime : 2023-09-08 23:46:46
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -129,7 +129,7 @@ def calculate_flops_hf(model_name,
                                                     precision=output_precision,
                                                     print_detailed=print_detailed,
                                                     print_results=print_results)
-            
+        
         calculate_flops_pipline.end_flops_calculate()
         
         if include_backPropagation:
@@ -137,11 +137,13 @@ def calculate_flops_hf(model_name,
             macs = macs * (1 + compute_bp_factor)
         
         if output_as_string:
-            return flops_to_string(flops, units=output_unit, precision=output_precision),\
-                macs_to_string(macs, units=output_unit, precision=output_precision),  \
-                params_to_string(params, units=output_unit, precision=output_precision)
+            flops = flops_to_string(flops, units=output_unit, precision=output_precision)
+            macs = macs_to_string(macs, units=output_unit, precision=output_precision)
+            params = params_to_string(params, units=output_unit, precision=output_precision)
         
         if return_results:
             return flops, macs, params, print_return
         else:
             return flops, macs, params
+
+

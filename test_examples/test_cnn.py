@@ -8,11 +8,11 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-19 13:05:48
- LastEditTime : 2023-08-24 19:42:30
+ LastEditTime : 2023-09-08 23:51:12
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
-import os 
-os.system("pip install calflops")
+# import os 
+# os.system("pip install calflops")
 
 from calflops import calculate_flops
 from torchvision import models

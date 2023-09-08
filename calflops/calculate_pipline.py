@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-20 11:04:11
- LastEditTime : 2023-09-07 23:50:28
+ LastEditTime : 2023-09-08 23:42:00
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -272,7 +272,7 @@ class CalFlopsPipline(object):
             prints.append(
                 "\nNote: 1. A module can have torch.nn.module or torch.nn.functional to compute logits (e.g. CrossEntropyLoss). \n They are not counted as submodules in calflops and not to be printed out. However they make up the difference between a parent's MACs and the sum of its submodules'.\n2. Number of floating-point operations is a theoretical estimation, thus FLOPS computed using that could be larger than the maximum system throughput.\n"
             )
-            prints.append(self.model)
+            prints.append(str(self.model))
 
         self.model.apply(del_extra_repr)
         

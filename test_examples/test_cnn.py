@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-08-19 13:05:48
- LastEditTime : 2023-09-08 23:51:12
+ LastEditTime : 2023-09-09 00:26:18
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 # import os 
@@ -27,7 +27,7 @@ flops, macs, params = calculate_flops(model=model,
                                       print_results=True,
                                       print_detailed=True)
 print("alexnet FLOPs:%s   MACs:%s   Params:%s \n" %(flops, macs, params))
- 
+
 # 
 flops, macs, params = calculate_flops(model=model, 
                                       input_shape=(batch_size, 3, 224, 224),

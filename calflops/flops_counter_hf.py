@@ -8,7 +8,7 @@
  Mail         : yxj2017@gmail.com
  Github       : https://github.com/MrYxJ
  Date         : 2023-09-03 11:03:58
- LastEditTime : 2023-09-09 00:20:06
+ LastEditTime : 2023-09-09 15:17:53
  Copyright (C) 2023 mryxj. All rights reserved.
 '''
 
@@ -26,6 +26,7 @@ from .calculate_pipline import CalFlopsPipline
 
 
 def calculate_flops_hf(model_name,
+                       empty_model=None,
                        input_shape=None,
                        trust_remote_code=True,
                        access_token="",
@@ -72,10 +73,11 @@ def calculate_flops_hf(model_name,
         The number of floating-point operations, multiply-accumulate operations (MACs), and parameters in the model.
     """
     
-    empty_model = create_empty_model(model_name=model_name,
-                                     library_name=None,
-                                     trust_remote_code=trust_remote_code,
-                                     access_token=access_token)
+    if empty_model == None:
+        empty_model = create_empty_model(model_name=model_name,
+                                         library_name=None,
+                                         trust_remote_code=trust_remote_code,
+                                         access_token=access_token)
     
     tokenizer = AutoTokenizer.from_pretrained(model_name,
                                               trust_remote_code=trust_remote_code,
@@ -85,7 +87,7 @@ def calculate_flops_hf(model_name,
     device = next(empty_model.parameters()).device
     empty_model = empty_model.to(device)
     empty_model.eval()
-   
+    
     calculate_flops_pipline = CalFlopsPipline(model=empty_model,
                                               include_backPropagation=include_backPropagation,
                                               compute_bp_factor=compute_bp_factor)

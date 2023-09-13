@@ -22,6 +22,12 @@ calflops: a FLOPs and Params calculate tool for neural networks
 # Introduction
 This tool(calflops) is designed to compute the theoretical amount of FLOPs(floating-point operations)、MACs(multiply-add operations) and Parameters in all various neural networks, such as Linear、 CNN、 RNN、 GCN、**Transformer(Bert、LlaMA etc Large Language Model)**，even including **any custom models** via ```torch.nn.function.*``` as long as based on the Pytorch implementation. Meanwhile this tool supports the printing of FLOPS, Parameter calculation value and proportion of each submodule of the model, it is convient for users to understand the performance consumption of each part of the model.
 
+Latest news, calflops has launched a tool on Huggingface Space, which is more convenient for computing FLOPS in the model of 🤗Huggingface Platform. Welcome to use it:https://huggingface.co/spaces/MrYXJ/calculate-model-flops
+
+<img width="1480" alt="截屏2023-09-13 23 25 05" src="https://github.com/MrYxJ/calculate-flops.pytorch/assets/21152077/75b77665-9c72-49a9-a86c-0114da1945fd">
+
+
+
 For LLM, this is probably the easiest tool to calculate FLOPs and it is very convenient for **huggingface** platform models. You can use ```calflops.calculate_flops_hf(model_name)``` by `model_name` which in [huggingface models](https://huggingface.co/models) to calculate model FLOPs without downloading entire model weights locally.Notice this method requires the model to support the empty model being created for model inference in meta device.
 
 ![](./screenshot/huggingface_model_names.png)
@@ -445,9 +451,9 @@ More model FLOPs would be updated successively, see github [calculate-flops.pyto
 
 Input data format: batch_size=1, seq_len=128
 
-Model         | Input Shape | Params(M)|Params(Total)| fwd FLOPs(G) | fwd MACs(G) | fwd + bwd FLOPs() | fwd + bwd MACs(G)  | 
+Model         | Input Shape | Params(M)|Params(Total)| fwd FLOPs(G) | fwd MACs(G) | fwd + bwd FLOPs(G) | fwd + bwd MACs(G)  | 
 ---           |---          |---       |---          |---        |---       |---     |---
-hfl/chinese-roberta-wwm-ext | (1,128)| 102.27M | 102267648 |       67.1  |    33.52  |  201.3 | 100.57
+hfl/chinese-roberta-wwm-ext | (1,128)| 102.27M | 102267648 | 22.363 | 11.174 | 67.089 | 33.523   | 
 ......
 
 You can use calflops to calculate the more different transformer models based bert, look forward to updating in this form.

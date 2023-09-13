@@ -506,10 +506,10 @@ def _patch_functionals(old_functions, module_flop_count, module_mac_count):
 def _patch_tensor_methods(old_functions, module_flop_count, module_mac_count):
     torch.matmul = wrapFunc(torch.matmul, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
     torch.Tensor.matmul = wrapFunc(torch.Tensor.matmul, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
-    torch.mm = wrapFunc(torch.mm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
-    torch.Tensor.mm = wrapFunc(torch.Tensor.mm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
-    torch.bmm = wrapFunc(torch.bmm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
-    torch.Tensor.bmm = wrapFunc(torch.Tensor.bmm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
+    # torch.mm = wrapFunc(torch.mm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
+    # torch.Tensor.mm = wrapFunc(torch.Tensor.mm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
+    # torch.bmm = wrapFunc(torch.bmm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
+    # torch.Tensor.bmm = wrapFunc(torch.Tensor.bmm, _matmul_flops_compute, old_functions, module_flop_count, module_mac_count)
 
     torch.addmm = wrapFunc(torch.addmm, _addmm_flops_compute, old_functions, module_flop_count, module_mac_count)
     torch.Tensor.addmm = wrapFunc(torch.Tensor.addmm, _tensor_addmm_flops_compute, old_functions, module_flop_count, module_mac_count)
@@ -567,10 +567,10 @@ def _reload_functionals(old_functions):
 def _reload_tensor_methods(old_functions):
     torch.matmul = old_functions[torch.matmul.__str__]
     torch.Tensor.matmul = old_functions[torch.Tensor.matmul.__str__]
-    torch.mm = old_functions[torch.mm.__str__]
-    torch.Tensor.mm = old_functions[torch.Tensor.mm.__str__]
-    torch.bmm = old_functions[torch.matmul.__str__]
-    torch.Tensor.bmm = old_functions[torch.Tensor.bmm.__str__]
+    # torch.mm = old_functions[torch.mm.__str__]
+    # torch.Tensor.mm = old_functions[torch.Tensor.mm.__str__]
+    # torch.bmm = old_functions[torch.matmul.__str__]
+    # torch.Tensor.bmm = old_functions[torch.Tensor.bmm.__str__]
     torch.addmm = old_functions[torch.addmm.__str__]
     torch.Tensor.addmm = old_functions[torch.Tensor.addmm.__str__]
     torch.mul = old_functions[torch.mul.__str__]

@@ -154,20 +154,19 @@ def calculate_flops(model,
 
     if kwargs:
         for key, value in kwargs.items():
-            kwargs[key] = value.to(device)
-
-        if forward_mode == 'forward':
-            _ = model(*args, **kwargs)
-        if forward_mode == 'generate':
-            _ = model.generate(*args, **kwargs)
+            if torch.is_tensor(value):
+                kwargs[key] = value.to(device)
     else:
+        kwargs = {}
         for index in range(len(args)):
             args[index] = args[index].to(device)
 
-        if forward_mode == 'forward':
-            _ = model(*args)
-        if forward_mode == 'generate':
-            _ = model.generate(*args)
+    if forward_mode == 'forward':
+        _ = model(*args, **kwargs)
+    elif forward_mode == 'generate':
+        _ = model.generate(*args, **kwargs)
+    else:
+        raise NotImplementedError("forward_mode should be either forward or generate")
 
     flops = calculate_flops_pipline.get_total_flops()
     macs = calculate_flops_pipline.get_total_macs()
